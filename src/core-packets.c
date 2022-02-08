@@ -256,7 +256,9 @@ int klvanc_packet_parse(struct klvanc_context_s *ctx, unsigned int lineNr, const
 						PRINT_ERR("Failed to dump by type, missing dumper function?\n");
 					}
 				}
-			} else {
+			}
+#ifdef ENABLE_RESTRICTED_CODE_PATH
+			else {
 				if (ctx->warn_on_decode_failure) {
 					if (klrestricted_code_path_block_execute(&ctx->rcp_failedToDecode)) {
 						PRINT_ERR("Failed parsing by type\n");
@@ -264,6 +266,7 @@ int klvanc_packet_parse(struct klvanc_context_s *ctx, unsigned int lineNr, const
 					}
 				}
 			}
+#endif
 
 			if (decodedPacket)
 				freeByType(ctx, hdr, decodedPacket);

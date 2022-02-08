@@ -19,11 +19,14 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
  */
 
+#ifdef ENABLE_VANC_CACHE
 #include <libklvanc/vanc.h>
 
 #include <stdint.h>
 #include <stdlib.h>
+#ifdef _POSIX_
 #include <pthread.h>
+#endif
 
 /* Maintain a static array of VANC messages, so that at any given time,
  * a user may ask "what message types have I seen on what lines?".
@@ -61,10 +64,10 @@ struct klvanc_cache_s * klvanc_cache_lookup(struct klvanc_context_s *ctx, uint8_
 
 int klvanc_cache_update(struct klvanc_context_s *ctx, struct klvanc_packet_header_s *pkt)
 {
-    if (!ctx)
-        return -1;
-    if (!ctx->cacheLines)
-        return -1;
+	if (!ctx)
+	return -1;
+	if (!ctx->cacheLines)
+	return -1;
 	if (pkt->did > 0xff)
 		return -1;
 	if (pkt->dbnsdid > 0xff)
@@ -100,10 +103,10 @@ int klvanc_cache_update(struct klvanc_context_s *ctx, struct klvanc_packet_heade
 
 void klvanc_cache_reset(struct klvanc_context_s *ctx)
 {
-    if (!ctx)
-        return;
-    if (!ctx->cacheLines)
-        return;
+	if (!ctx)
+		return;
+	if (!ctx->cacheLines)
+		return;
 
 	for (int d = 0; d <= 0xff; d++) {
 		for (int s = 0; s <= 0xff; s++) {
@@ -131,3 +134,4 @@ void klvanc_cache_reset(struct klvanc_context_s *ctx)
 		}
 	}
 }
+#endif

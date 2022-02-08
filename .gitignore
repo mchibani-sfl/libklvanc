@@ -20,3 +20,7 @@ missing
 libklvanc.la
 src/libklvanc_la-*.lo
 doxygen/html
+CMakeFiles
+CMakeCache*
+cmake_install*
+

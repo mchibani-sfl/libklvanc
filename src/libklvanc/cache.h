@@ -26,11 +26,12 @@
  * @brief	VANC Caching functionality
  */
 
+#ifdef ENABLE_VANC_CACHE
 #ifndef _VANC_CACHE_H
 #define _VANC_CACHE_H
-
+#ifdef _POSIX_
 #include <pthread.h>
-
+#endif
 #ifdef __cplusplus
 extern "C" {
 #endif  
@@ -87,3 +88,5 @@ struct klvanc_cache_s * klvanc_cache_lookup(struct klvanc_context_s *ctx, uint8_
 #endif  
 
 #endif /* _VANC_CACHE_H */
+#endif
+

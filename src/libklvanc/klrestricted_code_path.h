@@ -40,6 +40,7 @@
  * }
  */
 
+#ifdef ENABLE_RESTRICTED_CODE_PATH
 #ifndef _KLRESTRICTED_CODE_PATH_H
 #define _KLRESTRICTED_CODE_PATH_H
 
@@ -125,3 +126,4 @@ static __inline__ int klrestricted_code_path_block_execute(struct klrestricted_c
 #endif
 
 #endif /* _KLRESTRICTED_CODE_PATH_H */
+#endif // ENABLE_RESTRICTED_CODE_PATH

@@ -48,7 +48,7 @@ struct klvanc_packet_eia_708b_cdp_header
 	uint8_t svc_info_change;
 	uint8_t svc_info_complete;
 	uint8_t caption_service_active;
-	uint16_t cdp_hdr_sequence_cntr;;
+	uint16_t cdp_hdr_sequence_cntr;
 };
 
 struct klvanc_packet_eia_708b_time_code_section

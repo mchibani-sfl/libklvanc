@@ -25,10 +25,12 @@
 #define vanc_PRIVATE_H
 
 #include <sys/types.h>
-#include <sys/errno.h>
 
+#ifdef _POSIX_
+#include <sys/errno.h>
 /* We'll have a mutex and a list of items */
 #include <pthread.h>
+#endif
 #include "xorg-list.h"
 #include "klbitstream_readwriter.h"
 

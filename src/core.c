@@ -52,9 +52,10 @@ int klvanc_context_create(struct klvanc_context_s **ctx)
 	struct klvanc_context_s *p = calloc(1, sizeof(struct klvanc_context_s));
 	if (!p)
 		return -ENOMEM;
-
+#ifdef ENABLE_RESTRICTED_CODE_PATH
 	/* If we fail to parse a vanc message, don't report more than one of those per second. */
 	klrestricted_code_path_block_initialize(&p->rcp_failedToDecode, 1, 1, 60 * 1000);
+#endif
 
 	if (ret == KLAPI_OK)
 		*ctx = p;

@@ -37,8 +37,10 @@
 
 #include <stdint.h>
 #include <stdarg.h>
+#include <string.h>
+#ifdef _POSIX_
 #include <sys/errno.h>
-#include <sys/errno.h>
+#endif
 #include <libklvanc/klrestricted_code_path.h>
 
 #ifdef __cplusplus
@@ -127,7 +129,10 @@ struct klvanc_context_s
 
 	/* Internal use by the library */
 	void *priv;
+#ifdef ENABLE_RESTRICTED_CODE_PATH
 	struct klrestricted_code_path_block_s rcp_failedToDecode;
+#endif
+
 	unsigned int checksum_failures;
 
 	/* Optional: A cache of VANC lines we've detected in the stream.

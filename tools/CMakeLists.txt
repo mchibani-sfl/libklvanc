@@ -1,8 +1,7 @@
 cmake_minimum_required(VERSION 3.13)
-project(tools_klvanc_prj)
+project(tools_klvanc)
 
-set (CMAKE_C_STANDARD 99)
-set (CMAKE_C_STANDARD_REQUIRED TRUE)
+include(../src/common.cmake)
 
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
 set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
@@ -16,6 +15,7 @@ set(klvanc_lib_dir ${CMAKE_SOURCE_DIR}/../src/lib)
 message("Root dir: ${CMAKE_SOURCE_DIR}")
 message("Lib dir: ${CMAKE_LIBRARY_OUTPUT_DIRECTORY}")
 
+if(UNIX)
 FILE(GLOB klvanc_sources RELATIVE ${CMAKE_SOURCE_DIR} *.c)
 
 set(executables 
@@ -28,8 +28,19 @@ set(executables
  klvanc_smpte12_2
  klvanc_afd
  )
- 
- 
+else()
+# TODO. On Windows, only enable smpte12_2 for now. The others need more work.
+set(klvanc_sources smpte12_2.c)
+set(executables klvanc_smpte12_2)
+endif()
+
+ # Set OS specific config
+ if(UNIX)
+  set(os_spec_libs -pthread)
+ else()
+  set(os_spec_libs "")
+ endif()
+
  foreach(item ${executables})
  message("Building ${item}")
  add_executable(${item} 
@@ -41,10 +52,21 @@ set(executables
  target_link_directories(${item} 
  PUBLIC ${klvanc_lib_dir}
  )
- target_link_libraries(${item} -lklvanc -pthread)
+ target_link_libraries(${item} -lklvanc ${os_spec_libs})
  endforeach()
  
+# Set c flags
+add_compile_options(-Wall -O3)
  
- add_compile_options("-Wall -O3")
- add_compile_options("-D_FILE_OFFSET_BITS=64 -D_DEFAULT_SOURCE")
+# Set OS specific config
+if(UNIX)
+  message("Configuring for Unix")
+  add_compile_definitions(_FILE_OFFSET_BITS=64 _DEFAULT_SOURCE _POSIX_ ENABLE_RESTRICTED_CODE_PATH ENABLE_VANC_CACHE)
+elseif(MSVC)
+  message("Configuring for MSVC")
+  add_compile_definitions(__inline__=inline)
+else()
+  message(FATAL_ERROR "Unsupported platform")
+endif()
+
 
