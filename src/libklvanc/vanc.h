@@ -110,9 +110,9 @@ struct klvanc_callbacks_s
 	int (*sdp)(void *user_context, struct klvanc_context_s *, struct klvanc_packet_sdp_s *);
 	int (*smpte_12_2)(void *user_context, struct klvanc_context_s *, struct klvanc_packet_smpte_12_2_s *);
 };
-
+#ifdef ENABLE_VANC_CACHE
 struct klvanc_cache_s;
-
+#endif
 /**
  * @brief       Application specific context, the library allocates and stores user specific instance
  *		        information.
@@ -135,6 +135,7 @@ struct klvanc_context_s
 
 	unsigned int checksum_failures;
 
+#ifdef ENABLE_VANC_CACHE
 	/* Optional: A cache of VANC lines we've detected in the stream.
 	 * see klvanc_context_enable_monitor().
 	 * A static array of structs, for did/sdid rapid lookups.
@@ -147,6 +148,7 @@ struct klvanc_context_s
 	 * overwrites our previous cached message.
 	 */
 	struct klvanc_cache_s *cacheLines;
+#endif
 };
 
 #define LIBKLVANC_LOGLEVEL_ERR 0

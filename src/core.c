@@ -69,15 +69,16 @@ int klvanc_context_create(struct klvanc_context_s **ctx)
 int klvanc_context_destroy(struct klvanc_context_s *ctx)
 {
 	VALIDATE(ctx);
-
+#ifdef ENABLE_VANC_CACHE
 	klvanc_cache_free(ctx);
+#endif
 
 	memset(ctx, 0, sizeof(*ctx));
 	free(ctx);
 
 	return KLAPI_OK;
 }
-
+#ifdef ENABLE_VANC_CACHE
 int klvanc_context_enable_cache(struct klvanc_context_s *ctx)
 {
 	if (klvanc_cache_alloc(ctx) < 0) {
@@ -87,4 +88,4 @@ int klvanc_context_enable_cache(struct klvanc_context_s *ctx)
 
 	return 0;
 }
-
+#endif

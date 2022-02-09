@@ -80,7 +80,7 @@ int dump_SMPTE_12_2(struct klvanc_context_s *ctx, void *p);
 int parse_SMPTE_12_2(struct klvanc_context_s *ctx, struct klvanc_packet_header_s *hdr,
 		     void **pp);
 
-
+#ifdef ENABLE_VANC_CACHE
 /* We don't expect anything outside of the VANC framework to need toascii
  * call these, so we'll keep them private / internal calls.
  */
@@ -88,6 +88,7 @@ extern int  klvanc_cache_alloc(struct klvanc_context_s *ctx);
 extern void klvanc_cache_free(struct klvanc_context_s *ctx);
 extern int  klvanc_cache_update(struct klvanc_context_s *ctx,
 				struct klvanc_packet_header_s *pkt);
+#endif
 
 /* Logging Macros */
 #define PRINT_ERR(...) if (ctx->log_cb) ctx->log_cb(NULL, LIBKLVANC_LOGLEVEL_ERR, __VA_ARGS__);

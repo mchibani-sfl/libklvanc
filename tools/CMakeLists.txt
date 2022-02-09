@@ -30,8 +30,8 @@ set(executables
  )
 else()
 # TODO. On Windows, only enable smpte12_2 for now. The others need more work.
-set(klvanc_sources smpte12_2.c)
-set(executables klvanc_smpte12_2)
+set(klvanc_sources klvanc_util.c demo.c smpte12_2.c)
+set(executables klvanc_util klvanc_smpte12_2)
 endif()
 
  # Set OS specific config
@@ -49,10 +49,16 @@ endif()
  target_include_directories(${item} 
  PUBLIC ${klvanc_inc_dir}
  )
- target_link_directories(${item} 
- PUBLIC ${klvanc_lib_dir}
- )
- target_link_libraries(${item} -lklvanc ${os_spec_libs})
+if(UNIX)
+ target_link_directories(${item} PUBLIC ${klvanc_lib_dir})
+ target_link_libraries(${item} klvanc ${os_spec_libs})
+else()
+ target_link_directories(${item} PUBLIC ${klvanc_lib_dir}/Debug)
+ # Fixe me. Use debug macro
+ target_link_directories(${item} PUBLIC ${klvanc_lib_dir}/Release)
+ target_link_libraries(${item} klvanc ${os_spec_libs})
+endif()
+
  endforeach()
  
 # Set c flags

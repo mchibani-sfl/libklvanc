@@ -23,4 +23,7 @@ doxygen/html
 CMakeFiles
 CMakeCache*
 cmake_install*
+*.vcx*
+*.vs
+*.sln
 
