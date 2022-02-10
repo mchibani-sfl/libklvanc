@@ -27,23 +27,6 @@
 #include <stdlib.h>
 #include <string.h>
 
- // calculate 8 bit parity on data
-static int parity(uint16_t n)
-{
-#ifdef __GNUC__
-	return __builtin_parity(n);
-#else
-	// TODO. A very inefficient way to determine parity.
-	int parity = 0;
-	while (n)
-	{
-		parity = !parity;
-		n = n & (n - 1);
-	}
-	return parity;
-#endif
-}
-
 static int isValidHeader(struct klvanc_context_s *ctx, const unsigned short *arr, unsigned int len)
 {
 	int ret = 0;
@@ -327,7 +310,7 @@ int klvanc_sdi_create_payload(uint8_t sdid, uint8_t did,
 	 * sdid/did/count = 3
 	 */
 	for (int i = 3; i < (srcByteCount + 3 + 3); i++) {
-		if (parity(arr[i]))
+		if (klvanc_data_parity(arr[i]))
 			arr[i] |= 0x100;
 		else
 			arr[i] |= 0x200;

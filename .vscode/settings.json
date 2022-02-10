@@ -31,6 +31,7 @@
         "tools/klvanc_util": true,
         "tools/klvanc_capture": true,
         "tools/klvanc_smpte2038": true,
-    }
+    },
+    "cmake.sourceDirectory": "${workspaceFolder}/src"
 
 }

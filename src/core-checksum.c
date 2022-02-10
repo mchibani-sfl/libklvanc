@@ -80,3 +80,19 @@ int klvanc_checksum_is_valid(const uint16_t *words, int wordCount)
 
 	return 1;
 }
+
+int klvanc_data_parity(uint16_t word)
+{
+#ifdef __GNUC__
+	return __builtin_parity(word);
+#else
+	// TODO. 
+	// A very inefficient way to determine parity.
+	int parity = 0;
+	while (word) {
+		parity = !parity;
+		word = word & (word - 1);
+	}
+	return parity;
+#endif
+}

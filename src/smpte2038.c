@@ -26,6 +26,7 @@
 #include <inttypes.h>
 #include <libklvanc/smpte2038.h>
 #include "klbitstream_readwriter.h"
+#include "libklvanc/vanc-checksum.h"
 
 #define VANC8(n) ((n) & 0xff)
 
@@ -478,17 +479,17 @@ int klvanc_smpte2038_convert_line_to_words(struct klvanc_smpte2038_anc_data_line
 	if (l->DID & 0x300)
 		arr[i++] = l->DID;
 	else
-		arr[i++] = l->DID | (__builtin_parity(l->DID) ? 0x100 : 0x200);
+		arr[i++] = l->DID | (klvanc_data_parity(l->DID) ? 0x100 : 0x200);
 
 	if (l->SDID & 0x300)
 		arr[i++] = l->SDID;
 	else
-		arr[i++] = l->SDID | (__builtin_parity(l->SDID) ? 0x100 : 0x200);
+		arr[i++] = l->SDID | (klvanc_data_parity(l->SDID) ? 0x100 : 0x200);
 
 	if (l->data_count & 0x300)
 		arr[i++] = l->data_count;
 	else
-		arr[i++] = l->data_count | (__builtin_parity(l->data_count) ? 0x100 : 0x200);
+		arr[i++] = l->data_count | (klvanc_data_parity(l->data_count) ? 0x100 : 0x200);
 
 	for (int j = 0; j < VANC8(l->data_count); j++)
 		arr[i++] = l->user_data_words[j];

@@ -12,27 +12,19 @@ set(klvanc_sources *.c)
 set(klvanc_inc_dir ${CMAKE_SOURCE_DIR}/../src/)
 set(klvanc_lib_dir ${CMAKE_SOURCE_DIR}/../src/lib)
 
-message("Root dir: ${CMAKE_SOURCE_DIR}")
+message("Source dir: ${CMAKE_SOURCE_DIR}")
 message("Lib dir: ${CMAKE_LIBRARY_OUTPUT_DIRECTORY}")
+message("Build type: ${CMAKE_BUILD_TYPE}")
 
 if(UNIX)
-FILE(GLOB klvanc_sources RELATIVE ${CMAKE_SOURCE_DIR} *.c)
-
-set(executables 
- klvanc_util
- klvanc_parse
- klvanc_smpte2038
- klvanc_scte104
- klvanc_genscte104
- klvanc_eia708
- klvanc_smpte12_2
- klvanc_afd
- )
+  FILE(GLOB klvanc_sources RELATIVE ${CMAKE_SOURCE_DIR} *.c)
+  list(REMOVE_ITEM klvanc_sources klvanc_util.c)
 else()
-# TODO. On Windows, only enable smpte12_2 for now. The others need more work.
-set(klvanc_sources klvanc_util.c demo.c smpte12_2.c)
-set(executables klvanc_util klvanc_smpte12_2)
+  # TODO. On Windows, only enable smpte12_2 for now. The others need more work.
+  set(klvanc_sources klvanc_tools.c demo.c smpte12_2.c)
 endif()
+
+set(executables klvanc_tools)
 
  # Set OS specific config
  if(UNIX)
@@ -41,29 +33,18 @@ endif()
   set(os_spec_libs "")
  endif()
 
- foreach(item ${executables})
- message("Building ${item}")
- add_executable(${item} 
- ${klvanc_sources}
- )
- target_include_directories(${item} 
- PUBLIC ${klvanc_inc_dir}
- )
+add_executable(klvanc_tools ${klvanc_sources})
+target_include_directories(klvanc_tools PUBLIC ${klvanc_inc_dir})
 if(UNIX)
- target_link_directories(${item} PUBLIC ${klvanc_lib_dir})
- target_link_libraries(${item} klvanc ${os_spec_libs})
+ target_link_directories(klvanc_tools PUBLIC ${klvanc_lib_dir})
+ target_link_libraries(klvanc_tools klvanc ${os_spec_libs})
 else()
- target_link_directories(${item} PUBLIC ${klvanc_lib_dir}/Debug)
- # Fixe me. Use debug macro
- target_link_directories(${item} PUBLIC ${klvanc_lib_dir}/Release)
- target_link_libraries(${item} klvanc ${os_spec_libs})
+# Not clean, FIXME. May be use debug macro
+ target_link_directories(klvanc_tools PUBLIC ${klvanc_lib_dir}/Debug)
+ target_link_directories(klvanc_tools PUBLIC ${klvanc_lib_dir}/Release)
+ target_link_libraries(klvanc_tools klvanc ${os_spec_libs})
 endif()
 
- endforeach()
- 
-# Set c flags
-add_compile_options(-Wall -O3)
- 
 # Set OS specific config
 if(UNIX)
   message("Configuring for Unix")
@@ -74,5 +55,4 @@ elseif(MSVC)
 else()
   message(FATAL_ERROR "Unsupported platform")
 endif()
-
 

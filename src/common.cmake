@@ -11,10 +11,12 @@ set (CMAKE_C_STANDARD 99)
 set (CMAKE_C_STANDARD_REQUIRED TRUE)
 
 # Set c flags
-add_compile_options(-Wall -O3)
+add_compile_options(-Wall)
 
 # Set OS specific config
 if(UNIX)
+  # FIXME. Use debug macro to set the optimizatin level
+  #add_compile_options(-O3)
   # Use PIC even if we are building static lib, in case it's 
   # used to produce a shared lib.
   add_compile_options(-fPIC)

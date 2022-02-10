@@ -40,5 +40,13 @@ uint16_t klvanc_checksum_calculate(const uint16_t *words, int wordCount);
  * @return	0 - Success
  * @return	< 0 - Error
  */
-int klvanc_checksum_is_valid(const uint16_t *words, int wordCount);
+int klvanc_checksum_is_valid(const uint16_t* words, int wordCount);
+
+/**
+ * @brief	TODO - Brief description goes here.
+ * @param[in]	uint16_t words - Brief description goes here.
+ * @return	0 - if even, 1 if odd.
+  */
+int klvanc_data_parity(const uint16_t word);
+
 

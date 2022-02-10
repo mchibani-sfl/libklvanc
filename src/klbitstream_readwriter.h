@@ -354,7 +354,7 @@ static __inline__ void klbs_bitmove(struct klbs_context_s *dst, struct klbs_cont
 static __inline__ void klbs_bitcopy(struct klbs_context_s *dst, struct klbs_context_s *src, size_t bits)
 {
 	struct klbs_context_s copy = *src; /* Implicit struct copy */
-	return klbs_bitmove(dst, &copy, bits);
+	klbs_bitmove(dst, &copy, bits);
 }
 
 #endif /* KLBITSTREAM_READWRITER_H */

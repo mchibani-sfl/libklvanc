@@ -21,21 +21,17 @@
 
 #include <stdio.h>
 #include <string.h>
-#ifdef _POSIX_
 #include <libgen.h>
-#endif
 
 /* External tool hooks */
 extern int demo_main(int argc, char *argv[]);
-extern int smpte12_2_main(int argc, char *argv[]);
-#if 0
 extern int parse_main(int argc, char *argv[]);
 extern int smpte2038_main(int argc, char *argv[]);
 extern int scte104_main(int argc, char *argv[]);
 extern int genscte104_main(int argc, char *argv[]);
 extern int eia708_main(int argc, char *argv[]);
+extern int smpte12_2_main(int argc, char *argv[]);
 extern int afd_main(int argc, char *argv[]);
-#endif
 
 typedef int (*func_ptr)(int, char *argv[]);
 
@@ -46,19 +42,17 @@ int main(int argc, char *argv[])
 		func_ptr func;
 	} apps[] = {
 		{ "klvanc_util",		demo_main, },
-		{ "klvanc_smpte12_2",		smpte12_2_main, },
-#if 0
 		{ "klvanc_parse",		parse_main, },
 		{ "klvanc_smpte2038",		smpte2038_main, },
 		{ "klvanc_scte104",		scte104_main, },
 		{ "klvanc_eia708",		eia708_main, },
 		{ "klvanc_genscte104",		genscte104_main, },
+		{ "klvanc_smpte12_2",		smpte12_2_main, },
 		{ "klvanc_afd",			afd_main, },
 		{ 0, 0 },
-#endif
 	};
-#ifdef _POSIX_
 	char *appname = basename(argv[0]);
+
 	int i = 0;
 	struct app_s *app = &apps[i++];
 	while (app->name) {
@@ -75,7 +69,6 @@ int main(int argc, char *argv[])
 		printf("%s ", app->name);
 		app = &apps[i++];
 	}
-#endif
 
 	return 1;
 }
